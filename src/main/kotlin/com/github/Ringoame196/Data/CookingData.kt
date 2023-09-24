@@ -21,7 +21,11 @@ class CookingData {
     }
     fun bake(itemStack: ItemStack): ItemStack? {
         return when (itemStack.itemMeta?.displayName) {
-            "${ChatColor.RED}加工肉" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}ステーキ", 7)
+            "${ChatColor.RED}加工肉" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}ステーキ", 8)
+            "卵" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}オムレツ", 5)
+            "${ChatColor.RED}生ハンバーグ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーグ", 7)
+            "小麦" -> Item().make(Material.BREAD, "${ChatColor.GREEN}バンズ", 1)
+            "${ChatColor.RED}生ピザ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ピザ", 9)
             else -> itemStack
         }
     }
