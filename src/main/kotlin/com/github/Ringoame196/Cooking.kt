@@ -1,6 +1,7 @@
 package com.github.Ringoame196
 
 import com.github.Ringoame196.Data.CookingData
+import com.github.Ringoame196.Entity.ArmorStand
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -34,12 +35,13 @@ class Cooking {
     }
     fun bake(plugin: Plugin, player: Player, entity: ItemFrame, furnace: Furnace) {
         var c = 0
+        val armorstand = ArmorStand().summon(entity.location, "")
         object : BukkitRunnable() {
             override fun run() {
-                player.sendMessage(c.toString())
                 val item = entity.item
                 c++
                 furnace.burnTime = 20
+                armorstand.customName = "${ChatColor.YELLOW}${c}秒"
                 furnace.update()
                 if (c == 5) {
                     entity.setItem(CookingData().bake(item))
@@ -47,6 +49,7 @@ class Cooking {
                     if (item.type != Material.AIR) {
                         entity.setItem(Item().make(Material.CHARCOAL, "${ChatColor.BLACK}炭", 1))
                     }
+                    armorstand.remove()
                     this.cancel()
                 }
             }
