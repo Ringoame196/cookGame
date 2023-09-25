@@ -33,14 +33,14 @@ class CookingData {
     fun dressing(itemStack: ItemStack): ItemStack? {
         return when (itemStack.itemMeta?.displayName) {
             "${ChatColor.AQUA}剥きエビ" -> Item().make(Material.COD, "${ChatColor.AQUA}衣付きエビ", 4)
-            "${ChatColor.RED}加工肉" -> Item().make(Material.BEEF, "${ChatColor.RED}衣付き加工肉", 3)
+            "${ChatColor.RED}加工肉" -> Item().make(Material.BEEF, "${ChatColor.RED}生からあげ", 3)
             else -> null
         }
     }
     fun fly(itemStack: ItemStack): ItemStack {
         val item = when (itemStack.itemMeta?.displayName) {
             "${ChatColor.AQUA}衣付きエビ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}エビフライ", 14)
-            "${ChatColor.RED}衣付き加工肉" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}衣付き唐揚げ", 6)
+            "${ChatColor.RED}生からあげ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}からあげ", 6)
             else -> itemStack
         }
         item.amount = 1

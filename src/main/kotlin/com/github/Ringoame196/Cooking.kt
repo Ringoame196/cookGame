@@ -52,7 +52,7 @@ class Cooking {
                     }
                 } else if (c >= 10 || item.type == Material.AIR) {
                     if (item.type != Material.AIR) {
-                        entity.setItem(Item().make(Material.CHARCOAL, "${ChatColor.BLACK}炭", 1))
+                        entity.setItem(Item().make(Material.CHARCOAL, "${ChatColor.BLACK}炭", null))
                     }
                     armorStand.remove()
                     this.cancel()
