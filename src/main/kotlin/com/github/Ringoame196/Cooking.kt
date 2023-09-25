@@ -5,6 +5,7 @@ import com.github.Ringoame196.Entity.ArmorStand
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.block.Block
 import org.bukkit.block.Furnace
 import org.bukkit.entity.ItemFrame
 import org.bukkit.entity.Player
@@ -33,23 +34,51 @@ class Cooking {
         }
         return Random.nextInt(0, count) == 0
     }
-    fun bake(plugin: Plugin, player: Player, entity: ItemFrame, furnace: Furnace) {
+    fun bake(plugin: Plugin, entity: ItemFrame, furnace: Furnace) {
         var c = 0
-        val armorstand = ArmorStand().summon(entity.location, "")
+        if (entity.isVisible) { entity.isVisible = false }
+        val armorStand = ArmorStand().summon(entity.location, "")
         object : BukkitRunnable() {
             override fun run() {
                 val item = entity.item
                 c++
-                furnace.burnTime = 20
-                armorstand.customName = "${ChatColor.YELLOW}${c}秒"
+                furnace.burnTime = 40
+                armorStand.customName = "${ChatColor.YELLOW}${c}秒"
                 furnace.update()
                 if (c == 5) {
-                    entity.setItem(CookingData().bake(item))
+                    val bakeItem = CookingData().bake(item)
+                    if (bakeItem != null) {
+                        entity.setItem(bakeItem)
+                    }
                 } else if (c >= 10 || item.type == Material.AIR) {
                     if (item.type != Material.AIR) {
                         entity.setItem(Item().make(Material.CHARCOAL, "${ChatColor.BLACK}炭", 1))
                     }
-                    armorstand.remove()
+                    armorStand.remove()
+                    this.cancel()
+                }
+            }
+        }.runTaskTimer(plugin, 0L, 20L) // 1秒間隔 (20 ticks) でタスクを実行
+    }
+    fun dressing(player: Player) {
+        val item = player.inventory.itemInMainHand
+        val dressingItem = CookingData().dressing(item) ?: return
+        dressingItem.amount = item.amount
+        player.inventory.setItemInMainHand(dressingItem)
+    }
+    fun fry(block: Block, item: ItemStack, plugin: Plugin) {
+        val armorStand = ArmorStand().summon(block.location.clone().add(0.5, -0.2, 0.5), " ")
+        val timer = ArmorStand().summon(block.location.clone().add(0.5, 1.0, 0.5), " ")
+        armorStand.equipment?.helmet = item
+        var c = 0
+        object : BukkitRunnable() {
+            override fun run() {
+                c++
+                timer.customName = "${ChatColor.YELLOW}${c}秒"
+                if (c == 8) {
+                    Item().drop(block.location.clone().add(0.5, 1.0, 0.5), CookingData().fly(item))
+                    armorStand.remove()
+                    timer.remove()
                     this.cancel()
                 }
             }
