@@ -37,13 +37,44 @@ class CookingData {
             else -> null
         }
     }
-    fun fly(itemStack: ItemStack): ItemStack {
+    fun fly(itemStack: ItemStack): ItemStack? {
         val item = when (itemStack.itemMeta?.displayName) {
             "${ChatColor.AQUA}衣付きエビ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}エビフライ", 14)
             "${ChatColor.RED}生からあげ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}からあげ", 6)
-            else -> itemStack
+            else -> null
         }
-        item.amount = 1
+        item?.amount = 1
         return item
+    }
+    fun mix(ingredients: MutableList<String>): ItemStack? {
+        val milk = mutableListOf<String>("牛乳")
+        val omeletteRice = mutableListOf<String>("${ChatColor.YELLOW}オムレツ", "ライス")
+        val curryRice = mutableListOf<String>("${ChatColor.GOLD}カレー", "ライス")
+        val hamburg = mutableListOf<String>("${ChatColor.RED}加工肉", "${ChatColor.GOLD}剥きたまねぎ")
+        val noodles = mutableListOf<String>("${ChatColor.GREEN}小麦", "${ChatColor.AQUA}水")
+        val spaghetti = mutableListOf<String>("茹で麺", "${ChatColor.RED}加工肉", "${ChatColor.GOLD}スパイス")
+        val seafood = mutableListOf<String>("${ChatColor.AQUA}剥きエビ", "ライス", "${ChatColor.AQUA}刺身")
+        val material = mutableListOf<String>("卵", "${ChatColor.GREEN}小麦", "${ChatColor.AQUA}水")
+        val pizza = mutableListOf<String>("${ChatColor.YELLOW}生地", "${ChatColor.YELLOW}チーズ", "${ChatColor.RED}加工肉")
+        val doria = mutableListOf<String>("${ChatColor.GREEN}小麦", "牛乳", "ライス")
+        val salad = mutableListOf<String>("${ChatColor.GOLD}切ったじゃがいも", "${ChatColor.GOLD}切りすぎた人参", "${ChatColor.GOLD}千切りキャベツ")
+        val curryUdon = mutableListOf<String>("${ChatColor.GOLD}カレー", "うどん")
+        val hamburger = mutableListOf<String>("${ChatColor.YELLOW}チーズ", "${ChatColor.YELLOW}パン", "${ChatColor.YELLOW}ハンバーグ")
+        return when (ingredients.toSet()) {
+            milk.toSet() -> Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1)
+            omeletteRice.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}オムライス", 1)
+            curryRice.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレーライス", 2)
+            hamburg.toSet() -> Item().make(Material.BEEF, "${ChatColor.RED}生ハンバーグ", 2)
+            noodles.toSet() -> Item().make(Material.WHEAT, "生麺", 4)
+            spaghetti.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}スパゲッティ", 4)
+            seafood.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.AQUA}海鮮丼", 15)
+            material.toSet() -> Item().make(Material.WHEAT, "${ChatColor.YELLOW}生地", 6)
+            pizza.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}生ピザ", 11)
+            doria.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}生ドリア", 12)
+            salad.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GREEN}サラダ", 17)
+            curryUdon.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレーうどん", 19)
+            hamburger.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーガー", 21)
+            else -> null
+        }
     }
 }
