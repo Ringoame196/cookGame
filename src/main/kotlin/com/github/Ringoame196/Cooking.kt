@@ -104,13 +104,19 @@ class Cooking {
             Material.STICK -> {
                 player.playSound(player, Sound.BLOCK_BREWING_STAND_BREW, 1f, 1f)
                 Scoreboard().add("mixCount", locationText, 1)
-                if (Scoreboard().getValue("mixCount", locationText) < 24) { return }
                 val ingredients = mutableListOf<String>()
+                val cook = Scoreboard().getValue("mixCount", locationText) >= 25
                 for (armorStand in armorStandList) {
-                    val item = armorStand.equipment?.helmet?.itemMeta?.displayName ?: continue
-                    ingredients.add(item)
-                    armorStand.remove()
+                    val armorStandLocation = armorStand.location
+                    armorStandLocation.yaw = armorStandLocation.yaw + Random.nextInt(20, 30)
+                    armorStand.teleport(armorStandLocation)
+                    if (cook) {
+                        val item = armorStand.equipment?.helmet?.itemMeta?.displayName ?: continue
+                        ingredients.add(item)
+                        armorStand.remove()
+                    }
                 }
+                if (!cook) { return }
                 val food = CookingData().mix(ingredients)
                 if (food == null) {
                     mixReturn(player, armorStandList)
@@ -121,6 +127,7 @@ class Cooking {
                 player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
                 Scoreboard().set("mixCount", locationText, 0)
             }
+            Material.AIR -> {}
             else -> {
                 val armorStand = ArmorStand().summon(location, " ")
                 val inItem = item.clone()
