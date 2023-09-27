@@ -60,6 +60,7 @@ class CookingData {
         val salad = mutableListOf<String>("${ChatColor.GOLD}切ったじゃがいも", "${ChatColor.GOLD}切りすぎた人参", "${ChatColor.GOLD}千切りキャベツ")
         val curryUdon = mutableListOf<String>("${ChatColor.GOLD}カレー", "うどん")
         val hamburger = mutableListOf<String>("${ChatColor.YELLOW}チーズ", "${ChatColor.YELLOW}パン", "${ChatColor.YELLOW}ハンバーグ")
+        val kidsLnch = mutableListOf<String>("${ChatColor.YELLOW}オムライス", "${ChatColor.YELLOW}スパゲッティ", "${ChatColor.GOLD}カレーライス", "${ChatColor.YELLOW}ハンバーグ", "${ChatColor.YELLOW}エビフライ")
         return when (ingredients.toSet()) {
             milk.toSet() -> Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1)
             omeletteRice.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}オムライス", 1)
@@ -74,6 +75,7 @@ class CookingData {
             salad.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GREEN}サラダ", 17)
             curryUdon.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレーうどん", 19)
             hamburger.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーガー", 21)
+            kidsLnch.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}お子様ランチ", 25)
             else -> null
         }
     }

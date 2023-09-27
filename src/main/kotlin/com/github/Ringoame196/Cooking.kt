@@ -25,7 +25,7 @@ class Cooking {
         }
         player.inventory.addItem(CookingData().cut(item) ?: return)
         entity.setItem(ItemStack(Material.AIR))
-        player.playSound(player, Sound.ENTITY_SHEEP_SHEAR, 1f, 1f)
+        player.world.playSound(player.location, Sound.ENTITY_SHEEP_SHEAR, 1f, 1f)
     }
     private fun knife(player: Player): Boolean {
         val knife = player.inventory.itemInMainHand
@@ -72,7 +72,7 @@ class Cooking {
         val dressingItem = CookingData().dressing(item) ?: return
         dressingItem.amount = item.amount
         player.inventory.setItemInMainHand(dressingItem)
-        player.playSound(player, Sound.ITEM_BUCKET_EMPTY, 1f, 1f)
+        player.world.playSound(player.location, Sound.ITEM_BUCKET_EMPTY, 1f, 1f)
     }
     fun fry(block: Block, item: ItemStack, plugin: Plugin) {
         val armorStand = ArmorStand().summon(block.location.clone().add(0.5, -0.2, 0.5), " ")
@@ -102,17 +102,17 @@ class Cooking {
         val mainItem = player.inventory.itemInMainHand
         when (mainItem.type) {
             Material.STICK -> {
-                player.playSound(player, Sound.BLOCK_BREWING_STAND_BREW, 1f, 1f)
+                player.world.playSound(player.location, Sound.BLOCK_BREWING_STAND_BREW, 1f, 1f)
                 Scoreboard().add("mixCount", locationText, 1)
                 val ingredients = mutableListOf<String>()
                 val cook = Scoreboard().getValue("mixCount", locationText) >= 25
                 for (armorStand in armorStandList) {
                     val armorStandLocation = armorStand.location
-                    armorStandLocation.yaw = armorStandLocation.yaw + Random.nextInt(20, 30)
+                    armorStandLocation.yaw = armorStandLocation.yaw + Random.nextInt(10, 30)
                     armorStand.teleport(armorStandLocation)
                     if (cook) {
-                        val item = armorStand.equipment?.helmet?.itemMeta?.displayName ?: continue
-                        ingredients.add(item)
+                        val hetItem = armorStand.equipment?.helmet?.itemMeta?.displayName ?: continue
+                        ingredients.add(hetItem)
                         armorStand.remove()
                     }
                 }
@@ -124,7 +124,7 @@ class Cooking {
                     return
                 }
                 player.inventory.addItem(food)
-                player.playSound(player, Sound.BLOCK_ANVIL_USE, 1f, 1f)
+                player.world.playSound(player.location, Sound.BLOCK_ANVIL_USE, 1f, 1f)
                 Scoreboard().set("mixCount", locationText, 0)
             }
             Material.AIR -> {}
@@ -133,7 +133,7 @@ class Cooking {
                 val inItem = item.clone()
                 inItem.amount = 1
                 armorStand.equipment?.helmet = inItem
-                player.playSound(player, Sound.BLOCK_END_PORTAL_FRAME_FILL, 1f, 1f)
+                player.world.playSound(player.location, Sound.BLOCK_END_PORTAL_FRAME_FILL, 1f, 1f)
                 Item().remove(player)
                 Scoreboard().set("mixCount", locationText, 0)
             }
