@@ -79,4 +79,15 @@ class CookingData {
             else -> null
         }
     }
+    fun pot(ingredients: MutableList<String>): ItemStack? {
+        val noodles = mutableListOf<String>("生麺")
+        val rice = mutableListOf<String>("稲")
+        val curry = mutableListOf<String>("${ChatColor.GOLD}スパイス", "${ChatColor.GOLD}切った人参", "${ChatColor.GOLD}切ったじゃがいも", "${ChatColor.RED}加工肉")
+        return when (ingredients.toSet()) {
+            noodles.toSet() -> Item().make(Material.WHEAT, "${ChatColor.YELLOW}茹で麺", 5)
+            rice.toSet() -> Item().make(Material.MUSHROOM_STEW, "ライス", 3)
+            curry.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレー", 27)
+            else -> null
+        }
+    }
 }

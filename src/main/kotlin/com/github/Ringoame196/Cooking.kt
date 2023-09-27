@@ -83,6 +83,7 @@ class Cooking {
             override fun run() {
                 c--
                 timer.customName = "${ChatColor.YELLOW}${c}秒"
+                block.world.playSound(block.location, Sound.BLOCK_LAVA_POP, 1f, 1f)
                 if (c == 0) {
                     Item().drop(block.location.clone().add(0.5, 1.0, 0.5), CookingData().fly(item) ?: return)
                     armorStand.remove()
@@ -165,5 +166,61 @@ class Cooking {
         }
 
         return armorStandsInRange
+    }
+    fun pot(block: Block, player: Player, plugin: Plugin) {
+        val location = block.location.add(0.5, 0.0, 0.5)
+        val armorStandList = findArmorStandsInRadius(location, 0.5)
+        val ingredients = mutableListOf<String>()
+        val item = player.inventory.itemInMainHand
+        when (item.type) {
+            Material.AIR -> {}
+            Material.STICK -> {
+                if (block.type != Material.WATER_CAULDRON) { return }
+                for (armorStand in armorStandList) {
+                    val hetItem = armorStand.equipment?.helmet?.itemMeta?.displayName ?: continue
+                    ingredients.add(hetItem)
+                    armorStand.remove()
+                }
+                val food = CookingData().pot(ingredients)
+                if (food != null) {
+                    posCooking(plugin, block, food)
+                } else {
+                    for (armorStand in armorStandList) {
+                        val playerItem = armorStand.equipment?.helmet ?: continue
+                        Item().drop(location.add(0.5, 1.0, 0.5), playerItem)
+                    }
+                }
+            }
+            Material.WATER_BUCKET -> {
+                if (block.type != Material.CAULDRON) { return }
+                block.type = Material.WATER_CAULDRON
+            }
+            else -> {
+                val armorStand = ArmorStand().summon(location, " ")
+                val inItem = item.clone()
+                inItem.amount = 1
+                armorStand.equipment?.helmet = inItem
+                player.world.playSound(player.location, Sound.BLOCK_END_PORTAL_FRAME_FILL, 1f, 1f)
+                Item().remove(player)
+            }
+        }
+    }
+    private fun posCooking(plugin: Plugin, block: Block, item: ItemStack) {
+        val armorStand = ArmorStand().summon(block.location.clone().add(0.5, 1.0, 0.5), "")
+        var c = 15
+        object : BukkitRunnable() {
+            override fun run() {
+                c--
+                armorStand.customName = "${ChatColor.YELLOW}${c}秒"
+                block.world.playSound(block.location, Sound.BLOCK_LAVA_POP, 1f, 1f)
+                if (c == 0) {
+                    Item().drop(block.location.clone().add(0.5, 1.0, 0.5), item)
+                    armorStand.remove()
+                    block.type = Material.CAULDRON
+                    block.world.playSound(block.location, Sound.BLOCK_ANVIL_USE, 1f, 1f)
+                    this.cancel()
+                }
+            }
+        }.runTaskTimer(plugin, 0L, 20L) // 1秒間隔 (20 ticks) でタスクを実行
     }
 }
