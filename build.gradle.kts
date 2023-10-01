@@ -52,7 +52,7 @@ tasks.named("build") {
     doFirst {
         copy {
             from(buildDir.resolve("libs/${project.name}.jar"))
-            into("D:/デスクトップ/BATTLEサーバー/plugins")
+            into("D:/デスクトップ")
         }
     }
 }

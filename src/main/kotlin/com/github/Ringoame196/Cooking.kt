@@ -208,6 +208,8 @@ class Cooking {
     private fun posCooking(plugin: Plugin, block: Block, item: ItemStack) {
         val armorStand = ArmorStand().summon(block.location.clone().add(0.5, 1.0, 0.5), "")
         var c = 15
+        val upBlock = block.location.clone().add(0.0, 1.0, 0.0).block
+        upBlock.type = Material.IRON_TRAPDOOR
         object : BukkitRunnable() {
             override fun run() {
                 c--
@@ -218,6 +220,7 @@ class Cooking {
                     armorStand.remove()
                     block.type = Material.CAULDRON
                     block.world.playSound(block.location, Sound.BLOCK_ANVIL_USE, 1f, 1f)
+                    upBlock.type = Material.AIR
                     this.cancel()
                 }
             }
