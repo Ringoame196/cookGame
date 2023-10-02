@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
 
 class Recipe {
     fun select(item: ItemStack, player: Player) {
-        val gui = Bukkit.createInventory(null, 27, "${ChatColor.RED}レシピ")
+        val gui = Bukkit.createInventory(null, 9, "${ChatColor.RED}レシピ")
         RecipeData().quote(item.itemMeta?.displayName ?: return, gui) ?: return
         player.openInventory(gui)
     }
