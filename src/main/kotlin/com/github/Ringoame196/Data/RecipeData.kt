@@ -10,27 +10,29 @@ import org.bukkit.inventory.ItemStack
 class RecipeData {
     fun foodList(): MutableList<ItemStack> {
         return mutableListOf(
-            itemMake("イカの握り", 31),
-            itemMake("うどん", 18),
-            itemMake("${ChatColor.YELLOW}エビフライ", 14),
-            itemMake("${ChatColor.GOLD}お子様ランチ", 25),
-            itemMake("${ChatColor.YELLOW}オムライス", 1),
-            itemMake("${ChatColor.AQUA}海鮮丼", 15),
-            itemMake("${ChatColor.YELLOW}からあげ", 6),
-            itemMake("${ChatColor.GOLD}カレーうどん", 19),
-            itemMake("${ChatColor.GOLD}カレーライス", 2),
-            itemMake("刺身の盛り合わせ", 10),
-            itemMake("${ChatColor.GOLD}サーモンの握り", 30),
-            itemMake("${ChatColor.GREEN}サラダ", 17),
-            itemMake("${ChatColor.RED}ステーキ", 8),
-            itemMake("${ChatColor.YELLOW}スパゲッティー", 4),
-            itemMake("${ChatColor.RED}タコの握り", 32),
-            itemMake("${ChatColor.YELLOW}ドリア", 13),
-            itemMake("${ChatColor.YELLOW}ハンバーガー", 21),
-            itemMake("${ChatColor.YELLOW}ハンバーグ", 7),
-            itemMake("${ChatColor.YELLOW}ピザ", 9),
-            itemMake("${ChatColor.RED}マグロの握り", 29),
-            itemMake("${ChatColor.YELLOW}フライドポテト", 16),
+            itemMake("イカの握り", 31, 100),
+            itemMake("うどん", 18, 100),
+            itemMake("${ChatColor.YELLOW}エビフライ", 14, 100),
+            itemMake("${ChatColor.GOLD}お子様ランチ", 25, 100),
+            itemMake("${ChatColor.YELLOW}オムライス", 1, 100),
+            itemMake("${ChatColor.AQUA}海鮮丼", 15, 100),
+            itemMake("${ChatColor.YELLOW}からあげ", 6, 100),
+            itemMake("${ChatColor.GOLD}カレーうどん", 19, 100),
+            itemMake("${ChatColor.GOLD}カレーライス", 2, 100),
+            itemMake("刺身の盛り合わせ", 10, 100),
+            itemMake("${ChatColor.GOLD}サーモンのおにぎり", 36, 100),
+            itemMake("${ChatColor.GOLD}サーモンの握り", 30, 100),
+            itemMake("${ChatColor.GREEN}サラダ", 17, 100),
+            itemMake("${ChatColor.RED}ステーキ", 8, 100),
+            itemMake("${ChatColor.YELLOW}スパゲッティー", 4, 100),
+            itemMake("${ChatColor.RED}タコの握り", 32, 100),
+            itemMake("${ChatColor.RED}鉄火巻", 34, 100),
+            itemMake("${ChatColor.YELLOW}ドリア", 13, 100),
+            itemMake("${ChatColor.YELLOW}ハンバーガー", 21, 100),
+            itemMake("${ChatColor.YELLOW}ハンバーグ", 7, 100),
+            itemMake("${ChatColor.YELLOW}ピザ", 9, 100),
+            itemMake("${ChatColor.RED}マグロの握り", 29, 100),
+            itemMake("${ChatColor.YELLOW}フライドポテト", 16, 100),
         )
     }
 
@@ -43,8 +45,12 @@ class RecipeData {
         return gui
     }
 
-    private fun itemMake(name: String, customeModelData: Int): ItemStack {
-        return Item().make(Material.MUSHROOM_STEW, name, customeModelData)
+    private fun itemMake(name: String, customeModelData: Int, price: Int): ItemStack {
+        val item = Item().make(Material.MUSHROOM_STEW, name, customeModelData)
+        val meta = item.itemMeta
+        meta?.lore = mutableListOf<String>("${ChatColor.GREEN}${price}円")
+        item.setItemMeta(meta)
+        return item
     }
 
     fun quote(name: String, inventory: Inventory): Inventory? {
@@ -60,7 +66,7 @@ class RecipeData {
                 val material = mutableListOf<ItemStack>(
                     Item().make(Material.WHEAT, "生麺", 4)
                 )
-                mix(inventory, material, Item().make(Material.WHEAT, "茹で麺", 5))
+                pot(inventory, material, Item().make(Material.WHEAT, "茹で麺", 5))
             }
             "生麺" -> {
                 cut(
@@ -70,7 +76,7 @@ class RecipeData {
                 )
             }
             "${ChatColor.YELLOW}エビフライ" -> {
-                fly(
+                fry(
                     inventory,
                     Item().make(Material.COD, "${ChatColor.AQUA}衣付きエビ", 4),
                     Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}エビフライ", 14)
@@ -142,7 +148,7 @@ class RecipeData {
                 )
             }
             "${ChatColor.YELLOW}からあげ" -> {
-                fly(
+                fry(
                     inventory,
                     Item().make(Material.BEEF, "${ChatColor.RED}生からあげ", 3),
                     Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}からあげ", 6)
@@ -168,9 +174,9 @@ class RecipeData {
                     Item().make(Material.CARROT, "${ChatColor.GOLD}切った人参", 1),
                     Item().make(Material.POTATO, "${ChatColor.GOLD}切ったじゃがいも", 1),
                     Item().make(Material.BEEF, "${ChatColor.RED}加工肉", null),
-                    Item().make(Material.POTATO, "${ChatColor.GOLD}剥き玉ねぎ", 3)
+                    Item().make(Material.POTATO, "${ChatColor.GOLD}剥きたまねぎ", 3)
                 )
-                mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレー", 27))
+                pot(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}カレー", 27))
             }
             "${ChatColor.GOLD}切ったにんじん" -> {
                 cut(
@@ -227,11 +233,11 @@ class RecipeData {
             "イカの切り身" -> {
                 cut(
                     inventory,
-                    Item().make(Material.COD, "${ChatColor.RED}タコ", 9),
-                    Item().make(Material.COD, "${ChatColor.RED}切ったタコ", 10)
+                    Item().make(Material.COD, "イカ", 9),
+                    Item().make(Material.COD, "切ったイカ", 10)
                 )
             }
-            "${ChatColor.GREEN}サラダ" -> {
+            "${ChatColor.YELLOW}スパゲッティー" -> {
                 val material = mutableListOf<ItemStack>(
                     Item().make(Material.BEEF, "${ChatColor.RED}加工肉", null),
                     Item().make(Material.WHEAT, "茹で麺", 5),
@@ -260,9 +266,9 @@ class RecipeData {
                     Item().make(Material.BEEF, "${ChatColor.RED}加工肉", null)
                 )
             }
-            "${ChatColor.YELLOW}スパゲッティー" -> {
+            "${ChatColor.GREEN}サラダ" -> {
                 val material = mutableListOf<ItemStack>(
-                    Item().make(Material.POTATO, "${ChatColor.GOLD}切ったじゃがいも", 2),
+                    Item().make(Material.POTATO, "${ChatColor.GOLD}切ったじゃがいも", 1),
                     Item().make(Material.CARROT, "${ChatColor.GOLD}切りすぎたにんじん", 3),
                     Item().make(Material.WHEAT, "${ChatColor.GOLD}千切りキャベツ", 2)
                 )
@@ -298,18 +304,22 @@ class RecipeData {
                 )
                 mix(inventory, material, Item().make(Material.BEEF, "${ChatColor.RED}生ハンバーグ", 2))
             }
-            "${ChatColor.YELLOW}バンズ" -> {
+            "${ChatColor.YELLOW}生バンズ" -> {
                 val material = mutableListOf<ItemStack>(
                     Item().make(Material.WHEAT, "${ChatColor.YELLOW}生生地", 6),
                     Item().make(Material.PAPER, "${ChatColor.GOLD}バンズの型", 2)
                 )
-                mix(inventory, material, Item().make(Material.BREAD, "${ChatColor.YELLOW}バンズ", null))
+                mix(inventory, material, Item().make(Material.WHEAT, "${ChatColor.YELLOW}生バンズ", 7))
+            }
+            "${ChatColor.YELLOW}バンズ" -> {
+                bake(inventory, Item().make(Material.WHEAT, "${ChatColor.YELLOW}生バンズ", 7), Item().make(Material.WHEAT, "${ChatColor.YELLOW}バンズ", 8))
             }
             "${ChatColor.YELLOW}ハンバーガー" -> {
                 val material = mutableListOf<ItemStack>(
-                    Item().make(Material.BREAD, "${ChatColor.YELLOW}バンズ", null),
+                    Item().make(Material.WHEAT, "${ChatColor.YELLOW}バンズ", 8),
                     Item().make(Material.MILK_BUCKET, "牛乳", null),
-                    Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1)
+                    Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1),
+                    Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーグ", 7)
                 )
                 mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーガー", 21))
             }
@@ -320,7 +330,7 @@ class RecipeData {
                 mix(inventory, material, Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1))
             }
             "${ChatColor.YELLOW}フライドポテト" -> {
-                fly(
+                fry(
                     inventory,
                     Item().make(Material.POTATO, "${ChatColor.GOLD}切ったじゃがいも", 1),
                     Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}フライドポテト", 16)
@@ -337,7 +347,8 @@ class RecipeData {
                 val material = mutableListOf<ItemStack>(
                     Item().make(Material.WHEAT, "${ChatColor.YELLOW}生生地", 6),
                     Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1),
-                    Item().make(Material.BEEF, "${ChatColor.RED}加工肉", null)
+                    Item().make(Material.BEEF, "${ChatColor.RED}加工肉", null),
+                    Item().make(Material.POTATO, "${ChatColor.RED}トマトペースト", 9)
                 )
                 mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}生ピザ", 11))
             }
@@ -391,6 +402,25 @@ class RecipeData {
                 )
                 mix(inventory, material, Item().make(Material.COD, "シャリ", 15))
             }
+            "${ChatColor.RED}鉄火巻" -> {
+                val material = mutableListOf<ItemStack>(
+                    Item().make(Material.COD, "シャリ", 15),
+                    Item().make(Material.COD, "${ChatColor.BLACK}焼海苔", 16),
+                    Item().make(Material.COD, "${ChatColor.RED}マグロの切り身", 7)
+                )
+                mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}鉄火巻", 34))
+            }
+            "${ChatColor.BLACK}焼海苔" -> {
+                bake(inventory, Item().make(Material.COD, "海苔", 11), Item().make(Material.COD, "焼海苔", 16))
+            }
+            "${ChatColor.GOLD}サーモンのおにぎり" -> {
+                val material = mutableListOf<ItemStack>(
+                    Item().make(Material.COD, "${ChatColor.BLACK}焼海苔", 16),
+                    Item().make(Material.MUSHROOM_STEW, "ライス", 3),
+                    Item().make(Material.COD, "${ChatColor.GOLD}サーモンの切り身", 8)
+                )
+                mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}サーモンのおにぎり", 36))
+            }
             else -> return null
         }
         return inventory
@@ -409,17 +439,17 @@ class RecipeData {
         inventory.setItem(3, Item().make(Material.PAPER, "→", 1))
         inventory.setItem(4, after)
     }
-    private fun fly(inventory: Inventory, before: ItemStack, after: ItemStack) {
+    private fun fry(inventory: Inventory, before: ItemStack, after: ItemStack) {
         inventory.setItem(0, before)
         inventory.setItem(1, Item().make(Material.PAPER, "→", 1))
-        inventory.setItem(2, Item().make(Material.CAULDRON, "${ChatColor.YELLOW}揚げる", null))
+        inventory.setItem(2, Item().make(Material.CAULDRON, "${ChatColor.YELLOW}揚げる", 1))
         inventory.setItem(3, Item().make(Material.PAPER, "→", 1))
         inventory.setItem(4, after)
     }
     private fun clothing(inventory: Inventory, before: ItemStack, after: ItemStack) {
         inventory.setItem(0, before)
         inventory.setItem(1, Item().make(Material.PAPER, "→", 1))
-        inventory.setItem(2, Item().make(Material.CAULDRON, "衣", null))
+        inventory.setItem(2, Item().make(Material.CAULDRON, "衣", 2))
         inventory.setItem(3, Item().make(Material.PAPER, "→", 1))
         inventory.setItem(4, after)
     }
@@ -443,7 +473,7 @@ class RecipeData {
             i++
         }
         inventory.setItem(i, Item().make(Material.PAPER, "→", 1))
-        inventory.setItem(i + 1, Item().make(Material.CAULDRON, "${ChatColor.RED}鍋", null))
+        inventory.setItem(i + 1, Item().make(Material.CAULDRON, "${ChatColor.RED}鍋", 3))
         inventory.setItem(i + 2, Item().make(Material.PAPER, "→", 1))
         inventory.setItem(i + 3, after)
     }

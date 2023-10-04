@@ -21,6 +21,8 @@ class CookingData {
             "${ChatColor.GOLD}たまねぎ" -> Item().make(Material.POTATO, "${ChatColor.GOLD}剥きたまねぎ", 3)
             "${ChatColor.YELLOW}生生地" -> Item().make(Material.WHEAT, "生麺", 4)
             "${ChatColor.RED}鶏肉" -> Item().make(Material.BEEF, "${ChatColor.RED}加工鶏肉", 4)
+            "${ChatColor.RED}加工肉" -> Item().make(Material.BEEF, "${ChatColor.RED}細かく切った加工肉", 4)
+            "${ChatColor.RED}トマト" -> Item().make(Material.POTATO, "${ChatColor.RED}トマトペースト", 9)
             else -> return null
         }
     }
@@ -29,9 +31,11 @@ class CookingData {
             "${ChatColor.RED}加工肉" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}ステーキ", 8)
             "卵" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}オムレツ", 5)
             "${ChatColor.RED}生ハンバーグ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ハンバーグ", 7)
-            "${ChatColor.YELLOW}生バンズ" -> Item().make(Material.BREAD, "${ChatColor.YELLOW}バンズ", 1)
+            "${ChatColor.YELLOW}生バンズ" -> Item().make(Material.WHEAT, "${ChatColor.YELLOW}バンズ", 8)
             "${ChatColor.RED}生ピザ" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ピザ", 9)
             "${ChatColor.RED}生ドリア" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}ドリア", 13)
+            "海苔" -> Item().make(Material.COD, "${ChatColor.BLACK}焼海苔", 16)
+            "${ChatColor.RED}細かく切った加工肉" -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}サイコロステーキ", 35)
             else -> null
         }
     }
@@ -60,7 +64,7 @@ class CookingData {
         val spaghetti = mutableListOf<String>("茹で麺", "${ChatColor.RED}加工肉", "${ChatColor.GOLD}スパイス")
         val seafood = mutableListOf<String>("${ChatColor.AQUA}剥きエビ", "ライス", "${ChatColor.RED}マグロの切り身", "${ChatColor.GOLD}サーモンの切り身")
         val material = mutableListOf<String>("卵", "${ChatColor.GREEN}小麦", "${ChatColor.AQUA}水")
-        val pizza = mutableListOf<String>("${ChatColor.YELLOW}生生地", "${ChatColor.YELLOW}チーズ", "${ChatColor.RED}加工肉")
+        val pizza = mutableListOf<String>("${ChatColor.YELLOW}生生地", "${ChatColor.YELLOW}チーズ", "${ChatColor.RED}加工肉", "${ChatColor.RED}トマトペースト")
         val doria = mutableListOf<String>("${ChatColor.GREEN}小麦", "牛乳", "ライス")
         val salad = mutableListOf<String>("${ChatColor.GOLD}切ったじゃがいも", "${ChatColor.GOLD}切りすぎた人参", "${ChatColor.GOLD}千切りキャベツ")
         val curryUdon = mutableListOf<String>("${ChatColor.GOLD}カレー", "うどん")
@@ -73,6 +77,8 @@ class CookingData {
         val nigiriOfOctopus = mutableListOf<String>("シャリ", "${ChatColor.RED}切ったタコ")
         val assortedSashimi = mutableListOf<String>("${ChatColor.RED}切ったタコ", "${ChatColor.RED}マグロの切り身", "${ChatColor.GOLD}サーモンの切り身", "イカの切り身", "${ChatColor.AQUA}剥きエビ")
         val rawBuns = mutableListOf<String>("${ChatColor.YELLOW}生生地", "${ChatColor.GOLD}バンズの型")
+        val tekkamaki = mutableListOf<String>("シャリ", "${ChatColor.RED}マグロの切り身", "${ChatColor.BLACK}焼海苔")
+        val salmonNigiri = mutableListOf<String>("${ChatColor.GOLD}サーモンの切り身", "ライス", "${ChatColor.BLACK}焼海苔")
         return when (ingredients.toSet()) {
             milk.toSet() -> Item().make(Material.APPLE, "${ChatColor.YELLOW}チーズ", 1)
             omeletteRice.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.YELLOW}オムライス", 1)
@@ -93,7 +99,9 @@ class CookingData {
             nigiriOfSalmon.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}サーモンの握り", 30)
             nigiriOfSquid.toSet() -> Item().make(Material.MUSHROOM_STEW, "イカの握り", 31)
             nigiriOfOctopus.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}タコの握り", 32)
-            rawBuns.toSet() -> Item().make(Material.BREAD, "${ChatColor.YELLOW}生バンズ", 1)
+            rawBuns.toSet() -> Item().make(Material.WHEAT, "${ChatColor.YELLOW}生バンズ", 7)
+            tekkamaki.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.RED}鉄火巻", 34)
+            salmonNigiri.toSet() -> Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}サーモンのおにぎり", 36)
             else -> null
         }
     }
