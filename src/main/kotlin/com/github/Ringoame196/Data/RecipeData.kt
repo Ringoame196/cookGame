@@ -268,7 +268,7 @@ class RecipeData {
             }
             "${ChatColor.GREEN}サラダ" -> {
                 val material = mutableListOf<ItemStack>(
-                    Item().make(Material.POTATO, "${ChatColor.GOLD}切ったじゃがいも", 1),
+                    Item().make(Material.POTATO, "${ChatColor.GREEN}切ったキュウリ", 6),
                     Item().make(Material.CARROT, "${ChatColor.GOLD}切りすぎたにんじん", 3),
                     Item().make(Material.WHEAT, "${ChatColor.GOLD}千切りキャベツ", 2)
                 )
@@ -363,8 +363,8 @@ class RecipeData {
             "${ChatColor.RED}加工鶏肉" -> {
                 cut(
                     inventory,
-                    Item().make(Material.CHICKEN, "${ChatColor.RED}鶏肉", null),
-                    Item().make(Material.BEEF, "${ChatColor.RED}加工鶏肉", 4)
+                    Item().make(Material.CHICKEN, "${ChatColor.RED}鶏肉の塊", null),
+                    Item().make(Material.BEEF, "${ChatColor.RED}加工鶏肉", 7)
                 )
             }
             "${ChatColor.RED}マグロの握り" -> {
@@ -420,6 +420,9 @@ class RecipeData {
                     Item().make(Material.COD, "${ChatColor.GOLD}サーモンの切り身", 8)
                 )
                 mix(inventory, material, Item().make(Material.MUSHROOM_STEW, "${ChatColor.GOLD}サーモンのおにぎり", 36))
+            }
+            "${ChatColor.GREEN}切ったキュウリ" -> {
+                cut(inventory, Item().make(Material.POTATO, "${ChatColor.GREEN}キュウリ", 5), Item().make(Material.POTATO, "${ChatColor.GREEN}切ったキュウリ", 6))
             }
             else -> return null
         }
